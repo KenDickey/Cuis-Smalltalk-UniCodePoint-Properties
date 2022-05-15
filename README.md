@@ -23,7 +23,9 @@ or a _UnicodeCodePoint_.
 E.g.
 ```Smalltalk
   UniCode isSpace: (UnicodeCodePoint codePoint: 32).
+       "--> true"
   UniCode rangeInfo: (UnicodeCodePoint codePoint: 16r2E80).
+       "-->  #('CJK' 'CJK Radicals Supplement') "
 ```
 
 I hope to add a separate package here for Unicode Ropes.  We shall see..
