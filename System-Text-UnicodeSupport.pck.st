@@ -1,7 +1,7 @@
-'From Cuis 6.0 [latest update: #5166] on 15 May 2022 at 2:47:18 pm'!
+'From Cuis 6.0 [latest update: #5166] on 16 May 2022 at 1:36:38 pm'!
 'Description Unicode Codepoint property tests use large tables which are not needed otherwise.
 The UniCode class is a separately loaded utility class which provides access to these properties for those who need tham.'!
-!provides: 'System-Text-UnicodeSupport' 1 9!
+!provides: 'System-Text-UnicodeSupport' 1 11!
 SystemOrganization addCategory: 'System-Text-UnicodeSupport'!
 
 
@@ -31,6 +31,19 @@ In general, my methods take
 seeClassSide
 	"I have no instances.
 	 All the methods for UniCode are class methods."! !
+
+!UniCode class methodsFor: 'accessing' stamp: 'KenD 5/16/2022 13:36:28'!
+chineseNumberCodes
+	"Actually Chinese & Japanese"
+	self flag: #AddFancyNumbers.
+	"https://en.wikipedia.org/wiki/Chinese_numerals"
+	"		0		1		2	   3	         4			5	   6		7		8		  9 "
+	^ #( 16r7A7A 16r4E00 16r4E8C 16r4E09 16r56DB 16r4E94 16r516D 16r4E03 16r516B 16r4E5D
+	"     ten      hundred  thousand    ... "
+	 16r5341 16r767E 16r5343 16r4E07 16r842C 16r5104 16r4EBF 16r5146
+ 	"alternate zeros,  traditional & simplified "
+	  16r96F6  16rF9B2 )
+! !
 
 !UniCode class methodsFor: 'accessing' stamp: 'KenD 5/15/2022 10:47:29'!
 lineBreakCategoryFor: charOrCodePt
@@ -1061,9 +1074,12 @@ isMark: charOrCodePt
 	^ (((self generalCategoryCodeFor: charOrCodePt) bitAnd: MarkBit) 
 			= MarkBit)! !
 
-!UniCode class methodsFor: 'testing' stamp: 'KenD 5/15/2022 11:15:12'!
+!UniCode class methodsFor: 'testing' stamp: 'KenD 5/16/2022 13:25:41'!
 isNumberChar: charOrCodePt
 
+	"Chinese numbers are missing from UnicodeData.txt"
+	(self chineseNumberCodes includes: charOrCodePt value)
+		ifTrue: [ ^true ].
 	^ (((self generalCategoryCodeFor: charOrCodePt) bitAnd: NumberBit) 
 			= NumberBit)! !
 
